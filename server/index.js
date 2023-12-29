@@ -8,6 +8,8 @@ const morgan = require('morgan')
 require('dotenv').config()
 const path = require("path") ;
 const { fileURLToPath } = require("url");
+const authRoutes = require("./routes/auth.js")
+const {register} = require("./controllers/auth.js")
 
 // Middleware Configuration
 // const __filename = fileURLToPath(import.meta.url);
@@ -35,14 +37,13 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage});
 
-// MONGODB Setup
-// const mongooseOptions = {
-//     useCreateIndex: true, // Use the new option to opt-in for index creation
-//     useFindAndModify: false, // Use the new option to opt-out from using deprecated methods
-//     useNewUrlParser: true, // This is no longer needed, but you can keep it until the next major version
-//     useUnifiedTopology: true // This is no longer needed, but you can keep it until the next major version
-//   };
+// Routes with Files
+app.post("/auth/register", upload.single("picture"), register)
 
+// Routes
+app.use("/auth", authRoutes)
+
+// MONGODB Setup
 mongoose
 .connect(process.env.MONGODB_URL)
 .then(()=>{
