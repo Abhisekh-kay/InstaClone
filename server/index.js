@@ -12,9 +12,9 @@ const { fileURLToPath } = require("url");
 const authRoutes = require("./routes/auth.js")
 const {register} = require("./controllers/auth.js")
 const userRoutes = require("./routes/users.js")
-const postRoutes = require("./routes/posts.js");
+const postRoutes = require("./routes/post.js");
 const { verifyToken } = require('./middleware/auth.js');
-const {createPost} = require("./controllers/post.js")
+const {createPost} = require("./controllers/posts.js")
 
 // Middleware Configuration
 // const __filename = fileURLToPath(import.meta.url);
@@ -32,10 +32,10 @@ app.use("/assets",express.static(path.join(currentDirectory, 'public/assetss')))
 
 // File Storage
 const storage = multer.diskStorage({
-    destination: function(req,res,cb){
+    destination: function(req,file,cb){
         cb(null, "public/assets");
     },
-    filename: function(req,res,cb){
+    filename: function(req,file,cb){
         cb(null, file.originalname);
     }
 });
