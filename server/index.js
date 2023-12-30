@@ -8,8 +8,13 @@ const morgan = require('morgan')
 require('dotenv').config()
 const path = require("path") ;
 const { fileURLToPath } = require("url");
+
 const authRoutes = require("./routes/auth.js")
 const {register} = require("./controllers/auth.js")
+const userRoutes = require("./routes/users.js")
+const postRoutes = require("./routes/posts.js");
+const { verifyToken } = require('./middleware/auth.js');
+const {createPost} = require("./controllers/post.js")
 
 // Middleware Configuration
 // const __filename = fileURLToPath(import.meta.url);
@@ -39,9 +44,12 @@ const upload = multer({storage});
 
 // Routes with Files
 app.post("/auth/register", upload.single("picture"), register)
+app.post("/posts", verifyToken, upload.single("picture"), createPost)
 
 // Routes
 app.use("/auth", authRoutes)
+app.use("/users", userRoutes)
+app.use("/posts", postRoutes)
 
 // MONGODB Setup
 mongoose
