@@ -15,6 +15,9 @@ const userRoutes = require("./routes/users.js")
 const postRoutes = require("./routes/post.js");
 const { verifyToken } = require('./middleware/auth.js');
 const {createPost} = require("./controllers/posts.js")
+const User = require("./models/user.js")
+const Post = require("./models/Post.js")
+const {users, posts} = require("./data/index.js")
 
 // Middleware Configuration
 // const __filename = fileURLToPath(import.meta.url);
@@ -56,6 +59,10 @@ mongoose
 .connect(process.env.MONGODB_URL)
 .then(()=>{
     app.listen(process.env.PORT, ()=> console.log(`Server Port: ${process.env.PORT}`));
+
+    // Add Data one time
+    // User.insertMany(users);
+    // Post.insertMany(posts)
 })
 .catch((error) => console.log(`${error} did not connect`));
 
